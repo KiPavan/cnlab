@@ -1,0 +1,350 @@
+Program 7 a bit-staffing
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+int main()
+{
+int a[20],b[30],i,j,k,count,n;
+printf("enter frame length:");
+scanf("%d",&n);
+printf("enter input frame(0's&1's only):");
+for(i=0;i<n;i++)
+scanf("%d",&a[i]);
+i=0;count=1;j=0;
+while(i<n)
+{
+if(a[i]==1)
+{
+b[j]=a[i];
+for(k=i+1;a[k]==1&&k<n&&count<5;k++)
+{
+j++; b[j]=a[k];
+count++;
+if(count==5)
+{
+j++;
+b[j]=0;
+}
+i=k;
+}
+}
+else {
+b[j]=a[i];
+}
+i++;
+j++;
+}
+printf("After stuffing the frame is:");
+for(i=0;i<j;i++)
+printf("%d",b[i]);
+}
+
+Program 7 b char-stuffing
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<process.h>
+int main()
+{
+int i=0,j=0,n,pos; char a[20],b[50],ch;
+printf("enter string:\n");
+scanf("%s",a);
+n=strlen(a);
+printf("enter position\n");
+scanf("%d",&pos);
+if(pos>n)
+{
+printf("invalid position,Enter again:");
+scanf("%d",&pos);
+}
+printf("enter the character\n");
+ch=getche();
+b[0]='d';
+b[1]='l';
+b[2]='e';
+b[3]='s';
+b[4]='t';
+b[5]='x';
+j=6;
+while(i<n)
+{
+if(i==pos-1)
+{
+b[j]='d';
+b[j+1]='l';
+b[j+2]='e';
+b[j+3]=ch;
+b[j+4]='d';
+b[j+5]='l';
+b[j+6]='e';
+j=j+7;
+}
+if(a[i]=='d'&&a[i+1]=='l'&& a[i+2]=='e')
+{
+b[j]='d';
+b[j+1]='l';
+b[j+2]='e';
+j=j+3;
+}
+b[j]=a[i];
+i++;
+j++;
+}
+b[j]='d';
+b[j+1]='l';
+b[j+2]='e';
+b[j+3]='e';
+b[j+4]='t';
+b[j+5]='x';
+b[j+6]='\0';
+printf("\n frame after stuffing: \n");
+printf("%s",b);
+}
+
+Program 8 Dist-vector algorithm
+#include <stdio.h>
+int dest[50][50],temp[50][50],n,i,j,k,x;
+void dvr()
+{
+for(i=0;i<n;i++)
+for(j=0;j<n;j++)
+for(k=0;k<n;k++)
+if(dest[i][k]+dest[k][j]<dest[i][j])
+{
+dest[i][j]=dest[i][k]+dest[k][j];
+temp[i][j]=k;
+}
+for(i=0;i<n;i++)
+{
+printf("state value for router %d",i+1);
+for(j=0;j<n;j++)
+printf("node %d via %d distance %d",j+1,temp[i][j]+1,dest[i][j]);
+}
+printf("\n");
+}
+int main()
+{
+printf("enter the number of nodes");
+scanf("%d",&n);
+printf("enter the matrix");
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+scanf("%d",&dest[i][j]);
+dest[i][i]=0;
+temp[i][j]=j;
+}
+}
+dvr();
+return 0;
+}
+
+Program 9 stop-&-wait
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+int main ()
+{
+ int i, j, noframes, x, x1 = 10, x2;
+ printf("Enter the no. of frames: ");
+ scanf("%d",&noframes);
+ i = 1;
+ j = 1;
+ printf ("\nNumber of frames is %d", noframes);
+ while (noframes > 0)
+ {
+ printf ("\nSending frame %d", i);
+ srand (x1++);
+ x = rand () % 10;
+ if (x % 2 == 0)
+ {
+ for (x2 = 1; x2 < 2; x2++)
+ {
+ printf ("\nWaiting for %d seconds", x2);
+ sleep (x2);
+ }
+ printf ("\nSending frame %d", i);
+ srand (x1++);
+ x = rand () % 10;
+ }
+ printf ("\nAcknowledgement for frame %d", j);
+ noframes -= 1;
+ i++;
+ j++;
+ }
+ printf ("\nEnd of stop and wait protocol");
+ return 0;
+}
+
+Program 10 CRC-CCITT
+#include<stdio.h>
+#include<conio.h>
+int main(void)
+{
+int data[50],div[16],rem[16];
+int datalen, divlen, i,j,k;
+int ch;
+printf("Enter the data(only 0's & 1's ): ");
+i = 0;
+while((ch = fgetc(stdin)) != '\n')
+{
+if(ch == '1')
+data[i] = 1;
+else
+data[i] = 0;
+i++;
+}
+datalen = i;
+printf("\nEnter the divisor(0's&1's): ");
+i = 0;
+while((ch = fgetc(stdin)) != '\n')
+{
+if(ch == '1')
+div[i] = 1;
+else
+div[i] = 0;
+i++;
+}
+divlen = i;
+for(i = datalen ; i < datalen + divlen - 1 ; i++)
+data[i] = 0;
+datalen = datalen + divlen - 1;
+for(i = 0 ; i < divlen ; i++)
+{
+rem[i] = data[i]; k = divlen-1;
+}
+while(k < datalen)
+if(rem[0] == 1)
+{
+for(i = 0 ; i < divlen ; i++)
+rem[i] = rem[i] ^ div[i];
+}
+else
+{
+if(k == datalen-1)
+break;
+for(i = 0 ; i < divlen-1 ; i++)
+{
+rem[i] = rem[i+1];
+printf("%d",rem[i]);
+}
+rem[i] = data[++k];
+printf("%d\n",rem[i]);
+}
+j=1;
+for(i = datalen - divlen + 1 ; i < datalen ; i++)
+{
+data[i] = rem[j++];
+}
+printf("\nThe data to be sent is\n");
+for(i = 0 ; i < datalen ; i++)
+printf("%d",data[i]);
+return 0;
+}
+
+Program 11 Leaky-Bucket
+#include<stdio.h
+int main(){
+ int incoming, outgoing, buck_size, n, store = 0;
+ printf("Enter bucket size, outgoing rate and no of inputs: ");
+ scanf("%d %d %d", &buck_size, &outgoing, &n);
+ while (n != 0) {
+ printf("Enter the incoming packet size : ");
+ scanf("%d", &incoming);
+ printf("Incoming packet size %d\n", incoming);
+ if (incoming <= (buck_size - store)){
+ store += incoming;
+ printf("Bucket buffer size %d out of %d\n", store, buck_size);
+ } else {
+ printf("Dropped %d no of packets\n", incoming - (buck_size - store));
+ printf("Bucket buffer size %d out of %d\n", store, buck_size);
+ store = buck_size;
+ }
+ store = store - outgoing;
+ printf("After outgoing %d packets left out of %d in buffer\n", store, buck_size);
+ n--;
+ }
+}
+
+Program 12 client-server
+//server
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#define PORT 8080
+#define MAXLINE 1024
+// Driver code
+int main() {
+int sockfd;
+char buffer[MAXLINE];
+char *hello = "Hello from server";
+struct sockaddr_in servaddr, cliaddr;
+// Creating socket file descriptor
+if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
+perror("socket creation failed");
+exit(EXIT_FAILURE);
+}
+memset(&servaddr, 0, sizeof(servaddr));
+memset(&cliaddr, 0, sizeof(cliaddr));
+// Filling server information
+servaddr.sin_family = AF_INET; // IPv4
+servaddr.sin_addr.s_addr = INADDR_ANY;
+servaddr.sin_port = htons(PORT);
+// Bind the socket with the server address
+if ( bind(sockfd, (const struct sockaddr *)&servaddr,sizeof(servaddr)) < 0 )
+{
+perror("bind failed");
+exit(EXIT_FAILURE);
+}
+int len, n;
+len = sizeof(cliaddr); //len is value/resuslt
+n = recvfrom(sockfd, (char *)buffer, MAXLINE,MSG_WAITALL,( struct sockaddr *) &cliaddr,&len);
+buffer[n] = '\0';
+printf("Client : %s\n", buffer);
+sendto(sockfd, (const char *)hello, strlen(hello),MSG_CONFIRM, (const struct sockaddr *) &cliaddr,len);
+printf("Hello message sent.\n");
+return 0;
+}
+
+//client
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#define PORT 8080
+#define MAXLINE 1024
+// Driver code
+int main() {
+int sockfd;
+char buffer[MAXLINE];
+char *hello = "Hello from client";
+struct sockaddr_in servaddr;
+// Creating socket file descriptor
+if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
+perror("socket creation failed");
+exit(EXIT_FAILURE);
+}
+memset(&servaddr, 0, sizeof(servaddr));
+// Filling server information
+servaddr.sin_family = AF_INET;
+servaddr.sin_port = htons(PORT);
+servaddr.sin_addr.s_addr = INADDR_ANY;
+int n, len;
+sendto(sockfd, (const char *)hello, strlen(hello),MSG_CONFIRM, (const struct sockaddr *) &servaddr,sizeof(servaddr));
+printf("Hello message sent.\n");
+n = recvfrom(sockfd, (char *)buffer, MAXLINE,MSG_WAITALL, (struct sockaddr *) &servaddr,&len);
+buffer[n] = '\0';
+printf("Server : %s\n", buffer);
+close(sockfd);
+return 0;
+}
